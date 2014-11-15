@@ -1,9 +1,22 @@
 #!/bin/sh
+# sunpos.sh
+# This simple script
+# accesses http://www.nrel.gov/midc/solpos/spa.html
+# and gets the sun's zenith and azimuth angles
+# referenced to the South and
+# outputs it as ASCII text.
+#
+# Latitude, longitude and/or start date and end date
+# parameters are exposed to user. The rest are fixed.
+# see http://www.nrel.gov/midc/solpos/spa.html
+# for more details on the parameters
+#############################################################################
 
 # base URL
 URL="http://www.nrel.gov/midc/apps/spa.pl\?"
 
-# when only coordinates are given. The current unix time and date is used.
+
+# Use current UTC time and date if only coordinates are given.
 _run_only_coordinates()
 {
 
@@ -20,12 +33,16 @@ _run_only_coordinates()
     E_MONTH=$S_MONTH
     E_DAY=$S_DAY
 
-    # see http://www.nrel.gov/midc/solpos/spa.html
-    # for more details on the parameters
-
-
     # issue command
-    curl ${URL}syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}\&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}\&step\=10\&stepunit\=1\&latitude\=${LAT}\&longitude\=${LONG}\&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0\&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667\&field\=0\&field\=1\&zip\=0
+    curl \
+    ${URL}\
+    syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}\
+    \&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}\
+    \&step\=10\&stepunit\=1\
+    \&latitude\=${LAT}\&longitude\=${LONG}\
+    \&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0\
+    \&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667\
+    \&field\=0\&field\=1\&zip\=0
 
 }
 
@@ -35,7 +52,7 @@ _run_coordinates_and_date()
     LAT=${1} # latitude
     LONG=${2} # longitude
 
-    #parse start date
+    # parse start date
     IFS='/' read -ra S_DATE <<< "${3}"
 
     S_DAY="${S_DATE[0]}" # start date
@@ -49,10 +66,19 @@ _run_coordinates_and_date()
     E_MONTH="${E_DATE[1]}"
     E_YEAR="${E_DATE[2]}"
 
-    echo Received lat:$LAT long:$LONG  from:"${S_DAY}"/$S_MONTH/$S_YEAR to:$E_DAY/$E_MONTH/$E_YEAR
+    echo Received lat:$LAT long:$LONG  \
+        from:"${S_DAY}"/$S_MONTH/$S_YEAR to:$E_DAY/$E_MONTH/$E_YEAR
 
     # issue command
-    curl ${URL}syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}\&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}\&step\=10\&stepunit\=1\&latitude\=${LAT}\&longitude\=${LONG}\&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0\&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667\&field\=0\&field\=1\&zip\=0
+    curl \
+    ${URL}\
+    syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}\
+    \&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}\
+    \&step\=10\&stepunit\=1\
+    \&latitude\=${LAT}\&longitude\=${LONG}\
+    \&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0\
+    \&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667\
+    \&field\=0\&field\=1\&zip\=0
 
 }
 
