@@ -33,16 +33,18 @@ _run_only_coordinates()
     E_MONTH=$S_MONTH
     E_DAY=$S_DAY
 
-    # issue command
-    curl \
-    ${URL}\
-    syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}\
-    \&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}\
-    \&step\=10\&stepunit\=1\
-    \&latitude\=${LAT}\&longitude\=${LONG}\
-    \&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0\
-    \&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667\
-    \&field\=0\&field\=1\&zip\=0
+    # build command string
+    myCom="${URL}"
+    myCom+=syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}
+    myCom+=\&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}
+    myCom+=\&step\=10\&stepunit\=1
+    myCom+=\&latitude\=${LAT}\&longitude\=${LONG}
+    myCom+=\&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0
+    myCom+=\&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667
+    myCom+=\&field\=0\&field\=1\&zip\=0
+
+    # execute command
+    curl $myCom
 
 }
 
@@ -69,16 +71,18 @@ _run_coordinates_and_date()
     echo Received lat:$LAT long:$LONG  \
         from:"${S_DAY}"/$S_MONTH/$S_YEAR to:$E_DAY/$E_MONTH/$E_YEAR
 
-    # issue command
-    curl \
-    ${URL}\
-    syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}\
-    \&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}\
-    \&step\=10\&stepunit\=1\
-    \&latitude\=${LAT}\&longitude\=${LONG}\
-    \&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0\
-    \&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667\
-    \&field\=0\&field\=1\&zip\=0
+    # build command string
+    myCom="${URL}"
+    myCom+=syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}
+    myCom+=\&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}
+    myCom+=\&step\=10\&stepunit\=1
+    myCom+=\&latitude\=${LAT}\&longitude\=${LONG}
+    myCom+=\&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0
+    myCom+=\&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667
+    myCom+=\&field\=0\&field\=1\&zip\=0
+
+    # execute command
+    curl $myCom
 
 }
 
