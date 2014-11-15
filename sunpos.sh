@@ -63,10 +63,20 @@ elif [ $# -eq 4 ]; then
     _run_coordinates_and_date "$@"
 else
     echo $0: invalid arguments
-    echo Usage: $0 \<latitude\> \<longitude\> \[ \<start_date\> \<end_date\> \]
+    echo Usage: $0 latitude longitude \[start_date end_date\]
+    echo
+    echo Default start and end dates are the current \(UTC\) date.
+    echo
+    echo latitude
+    echo -e '\t'is given with 3 decimals precision.
+    echo longitude
+    echo -e '\t'is given with 3 decimals precision.
+    echo date
+    echo -e '\t' date format dd/mm/yyyy.
+    echo
     echo e.g.
-    echo Ex.1: $0 39.743 -105.178
-    echo Ex.2: $0 39.743 -105.178 14/11/2014 16/11/2014
+    echo -e '\t'Ex.1: $0 39.743 -105.178
+    echo -e '\t'Ex.2: $0 39.743 -105.178 14/11/2014 16/11/2014
     echo ""
     #echo $@
     exit
