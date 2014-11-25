@@ -49,34 +49,47 @@ _run_only_coordinates()
 
 }
 
-# Use coordinates and start and end date.
-_run_coordinates_and_date()
+# Use coordinates and step size and unit.
+_run_coordinates_and_steps()
 {
     LAT=${1} # latitude
     LONG=${2} # longitude
 
-    # parse start date
-    IFS='/' read -ra S_DATE <<< "${3}"
+    # start date to end date
+    S_YEAR=$(date -u +%Y) # start date
+    S_MONTH=$(date -u +%m)
+    S_DAY=$(date -u +%d)
 
-    S_DAY="${S_DATE[0]}" # start date
-    S_MONTH="${S_DATE[1]}"
-    S_YEAR="${S_DATE[2]}"
+    E_YEAR=$S_YEAR # end date
+    E_MONTH=$S_MONTH
+    E_DAY=$S_DAY
 
-    # parse end date
-    IFS='/' read -ra E_DATE <<< "${4}"
+    if [ $3 -gt 60 -o $3 -lt 1 ]; then
+        echo $0: invalid arguments
+        _display_help
+        exit
+    fi
+    STEP_SIZE=${3}
 
-    E_DAY="${E_DATE[0]}" # end date
-    E_MONTH="${E_DATE[1]}"
-    E_YEAR="${E_DATE[2]}"
+    if [ $4 != 's' -a $4 != 'm' ]; then
+        echo $0: invalid arguments
+        _display_help
+        exit
+    elif [ $4 == 's' ]; then
+        STEP_UNIT=0
+    elif [ $4 == 'm' ]; then
+        STEP_UNIT=1
+    fi
 
     echo Received lat:$LAT long:$LONG  \
-        from:"${S_DAY}"/$S_MONTH/$S_YEAR to:$E_DAY/$E_MONTH/$E_YEAR
+        from:"${S_DAY}"/$S_MONTH/$S_YEAR to:$E_DAY/$E_MONTH/$E_YEAR \
+        step:${STEP_SIZE}${4}
 
     # build command string
     myCom="${URL}"
     myCom+=syear\=${S_YEAR}\&smonth\=${S_MONTH}\&sday\=${S_DAY}
     myCom+=\&eyear\=${E_YEAR}\&emonth\=${E_MONTH}\&eday\=${E_DAY}
-    myCom+=\&step\=10\&stepunit\=1
+    myCom+=\&step\=${STEP_SIZE}\&stepunit\=${STEP_UNIT}
     myCom+=\&latitude\=${LAT}\&longitude\=${LONG}
     myCom+=\&timezone\=0\&elev\=0\&press\=835\&temp\=10\&dut1\=0.0
     myCom+=\&deltat\=64.797\&azmrot\=180\&slope\=0\&refract\=0.5667
@@ -94,40 +107,40 @@ _run_coordinates_date_and_steps()
     LAT=${1} # latitude
     LONG=${2} # longitude
 
+    if [ $3 -gt 60 -o $3 -lt 1 ]; then
+        echo $0: invalid arguments
+        _display_help
+        exit
+    fi
+    STEP_SIZE=${3}
+
+    if [ $4 != 's' -a $4 != 'm' ]; then
+        echo $0: invalid arguments
+        _display_help
+        exit
+    elif [ $4 == 's' ]; then
+        STEP_UNIT=0
+    elif [ $4 == 'm' ]; then
+        STEP_UNIT=1
+    fi
+
     # parse start date
-    IFS='/' read -ra S_DATE <<< "${3}"
+    IFS='/' read -ra S_DATE <<< "${5}"
 
     S_DAY="${S_DATE[0]}" # start date
     S_MONTH="${S_DATE[1]}"
     S_YEAR="${S_DATE[2]}"
 
     # parse end date
-    IFS='/' read -ra E_DATE <<< "${4}"
+    IFS='/' read -ra E_DATE <<< "${6}"
 
     E_DAY="${E_DATE[0]}" # end date
     E_MONTH="${E_DATE[1]}"
     E_YEAR="${E_DATE[2]}"
 
-    if [ $5 -gt 60 -o $5 -lt 1 ]; then
-        echo $0: invalid arguments
-        _display_help
-        exit
-    fi
-    STEP_SIZE=${5}
-
-    if [ $6 != 's' -a $6 != 'm' ]; then
-        echo $0: invalid arguments
-        _display_help
-        exit
-    elif [ $6 == 's' ]; then
-        STEP_UNIT=0
-    elif [ $6 == 'm' ]; then
-        STEP_UNIT=1
-    fi
-
     echo Received lat:$LAT long:$LONG  \
         from:"${S_DAY}"/$S_MONTH/$S_YEAR to:$E_DAY/$E_MONTH/$E_YEAR \
-        step:${STEP_SIZE}${6}
+        step:${STEP_SIZE}${4}
 
     # build command string
     myCom="${URL}"
@@ -168,15 +181,15 @@ _display_help(){
     echo
     echo e.g.
     echo -e '\t'Ex.1: $0 39.743 -105.178
-    echo -e '\t'Ex.2: $0 39.743 -105.178 14/11/2014 16/11/2014
-    echo -e '\t'Ex.2: $0 39.743 -105.178 14/11/2014 16/11/2014 25 m
+    echo -e '\t'Ex.2: $0 39.743 -105.178 25 m
+    echo -e '\t'Ex.2: $0 39.743 -105.178 25 m 14/11/2014 16/11/2014
     echo ""
 }
 
 if [ $# -eq 2 ]; then
     _run_only_coordinates "$@"
 elif [ $# -eq 4 ]; then
-    _run_coordinates_and_date "$@"
+    _run_coordinates_and_steps "$@"
 elif [ $# -eq 6 ]; then
     _run_coordinates_date_and_steps "$@"
 else
