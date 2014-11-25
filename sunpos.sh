@@ -1,5 +1,6 @@
 #!/bin/sh
-# sunpos.sh
+# file: sunpos.sh
+# author: Raul James
 #
 # This simple script
 # accesses http://www.nrel.gov/midc/solpos/spa.html
@@ -179,11 +180,23 @@ _display_help(){
     echo -e '\t' s: seconds.
     echo -e '\t' m: minute.
     echo
-    echo e.g.
+    echo e.g. Input:
+    echo
     echo -e '\t'Ex.1: $0 39.743 -105.178
     echo -e '\t'Ex.2: $0 39.743 -105.178 25 m
     echo -e '\t'Ex.2: $0 39.743 -105.178 25 m 14/11/2014 16/11/2014
-    echo ""
+    echo
+    echo e.g Output:
+    echo
+    echo -e '\t' Date,Time,Topocentric zenith angle,Top. azimuth angle \(eastward from N\)
+    echo -e '\t' 11/14/2014,0:00:00,93.234296,248.983741
+    echo -e '\t' 11/14/2014,0:10:00,95.038832,250.532635
+    echo -e '\t' 11/14/2014,0:20:00,96.860576,252.065377
+    echo
+    echo NOTE:
+    echo -e '\t' the output date format: mm/dd/yyyy
+    echo
+
 }
 
 if [ $# -eq 2 ]; then
