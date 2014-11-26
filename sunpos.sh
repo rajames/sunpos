@@ -159,7 +159,7 @@ _run_coordinates_date_and_steps()
 }
 
 _display_help(){
-    echo Usage: $0 latitude longitude \[start_date end_date\]
+    echo Usage: $0 latitude longitude \[ step_size step_unit \[ start_date end_date \] \]
     echo
     echo Default start and end dates are the current \(UTC\) date.
     echo
