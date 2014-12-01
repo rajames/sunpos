@@ -1,18 +1,20 @@
 sunpos
 ======
 
-A simple shell script to get the sun's position based on [NREL's](http://www.nrel.gov/midc/spa/) sun position algorithm (spa).
+A simple shell script to get the sun's position based on [NREL's](http://www.nrel.gov/midc/solpos/spa.html) sun position algorithm (spa).
 
 ## Usage
-    ./sunpos.sh <lat> <long> [ <step_size> <step_unit> [ <start_date> <end_date> ] ]
+    ./sunpos.sh [-sS <step_size>] [-fF <start_date> ] [-tT <end_date> ] [-v] <lat> <long>
 
 ### Example
 
 #### Input
 
     ./sunpos.sh 39.743 -105.178
-    ./sunpos.sh 39.743 -105.178 25 m
-    ./sunpos.sh 39.743 -105.178 25 m 14/11/2014 16/11/2014
+    ./sunpos.sh -s 25 39.743 -105.178
+    ./sunpos.sh -S 50 -39.743 -105.178
+    ./sunpos.sh -s 25 -f 14/11/2014 -t 16/11/2014 39.743 -105.178
+    ./sunpos.sh -s 25 -F 11/14/2014 -T 11/16/2014 39.743 -105.178
 
 #### Output
 
